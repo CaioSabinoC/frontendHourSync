@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <script>if(localStorage.getItem("hoursync_darkmode")==="true")document.documentElement.classList.add("dark-mode");</script>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- PWA -->
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#ea580c">
+<link rel="apple-touch-icon" href="../img/icon192.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"><link rel="icon" href="../img/logo.png">
+  <title>Coordenadores - HourSync</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/darkmode.css">
+</head>
+<body class="app-body">
+  <div class="sidebar" id="sidebar">
+    <div>
+      <div class="toggle-btn" onclick="toggleSidebar()"><i class="bi bi-list"></i></div>
+      <div class="logo">HourSync</div>
+      <div class="profile"><img src="../img/taylor.jpeg" alt="profile"><h6>Taylor Swift</h6></div>
+      <div class="menu">
+        <a href="../dashboard_admin/dashboard_admin.html"><i class="bi bi-grid"></i><span>Dashboard</span></a>
+        <a href="../gestao_cursos_admin/gestao_cursos_admin.html"><i class="bi bi-book"></i><span>Gestão de Cursos</span></a>
+        <a href="../coordenadores_admin/coordenadores_admin.html" class="active"><i class="bi bi-people"></i><span>Coordenadores</span></a>
+        <a href="../certificados_admin/certificados_admin.html"><i class="bi bi-file-earmark-text"></i><span>Certificados</span></a>
+        <a href="../alunos_admin/alunos_admin.html"><i class="bi bi-person-lines-fill"></i><span>Alunos</span></a>
+        <a href="../configuracoes_admin/configuracoes_admin.html"><i class="bi bi-gear"></i><span>Configurações</span></a>
+      </div>
+    </div>
+    <div><div class="divider"></div><a href="../login/login.html" class="logout"><i class="bi bi-box-arrow-right"></i><span>Sair</span></a></div>
+  </div>
+  <div class="content scrollable">
+    <div class="topbar">
+      <h5><strong>Gestão de Coordenadores</strong> <span class="topbar-sub">/ Gerenciar coordenadores</span></h5>
+      <input type="text" class="search-box" id="searchInput" placeholder="Pesquisar coordenador...">
+    </div>
+    <div class="row stats-row g-3">
+      <div class="col-md-3 col-sm-6"><div class="stat-card border-coordenadores"><div class="stat-title">Total de Coordenadores</div><div class="stat-number" id="totalCoordenadoresCount">0</div></div></div>
+      <div class="col-md-3 col-sm-6"><div class="stat-card border-cursos"><div class="stat-title">Cursos Vinculados</div><div class="stat-number" id="totalCursosVinculados">0</div></div></div>
+      <div class="col-md-3 col-sm-6"><div class="stat-card border-ativos"><div class="stat-title">Coordenadores Ativos</div><div class="stat-number" id="ativosCount">0</div></div></div>
+      <div class="col-md-3 col-sm-6"><div class="stat-card border-inativos"><div class="stat-title">Coordenadores Inativos</div><div class="stat-number" id="inativosCount">0</div></div></div>
+    </div>
+    <div class="coordinators-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h6><i class="bi bi-person-badge"></i> Lista de Coordenadores</h6>
+        <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#addCoordinatorModal"><i class="bi bi-plus-lg"></i> Adicionar Coordenador</button>
+      </div>
+      <div class="table-responsive">
+        <table class="table-custom"><thead><tr><th>Nome</th><th>Email</th><th>Cursos</th><th>Status</th><th>Ações</th></tr></thead><tbody id="coordinatorsTableBody"></tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ADICIONAR -->
+  <div class="modal fade" id="addCoordinatorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header modal-header-gradient">
+          <h5 class="modal-title"><i class="bi bi-person-plus-fill me-2"></i> Adicionar Coordenador</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="mb-3"><label class="form-label fw-bold required-field">Nome Completo</label><input type="text" class="form-control" id="coordName" placeholder="Ex: Amelara Silva"></div>
+          <div class="mb-3"><label class="form-label fw-bold required-field">Email</label><input type="email" class="form-control" id="coordEmail" placeholder="Ex: coord@faculdade.edu.br"></div>
+          <div class="mb-3"><label class="form-label fw-bold required-field">Senha</label><input type="password" class="form-control" id="coordPassword" placeholder="********"></div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Cursos Vinculados</label>
+            <div class="mb-2"><select class="form-select" id="courseSelect"><option value="">Selecione um curso...</option></select></div>
+            <div id="selectedCoursesContainer" class="d-flex flex-wrap gap-1 mb-2"></div>
+            <button type="button" class="btn-outline-custom btn-sm" id="addCourseBtn"><i class="bi bi-plus-lg"></i> Adicionar Curso</button>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="btn btn-secondary btn-cancel-modal" data-bs-dismiss="modal">Cancelar</button><button class="btn btn-add" id="confirmAddCoordBtn">Salvar Coordenador</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EDITAR -->
+  <div class="modal fade" id="editCoordinatorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header modal-header-gradient">
+          <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i> Editar Coordenador</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <input type="hidden" id="editCoordId">
+          <div class="mb-3"><label class="form-label fw-bold required-field">Nome Completo</label><input type="text" class="form-control" id="editCoordName"></div>
+          <div class="mb-3"><label class="form-label fw-bold required-field">Email</label><input type="email" class="form-control" id="editCoordEmail"></div>
+          <div class="mb-3"><label class="form-label fw-bold">Nova Senha (opcional)</label><input type="password" class="form-control" id="editCoordPassword" placeholder="Deixe em branco para manter"></div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Cursos Vinculados</label>
+            <div class="mb-2"><select class="form-select" id="editCourseSelect"><option value="">Selecione um curso...</option></select></div>
+            <div id="editSelectedCoursesContainer" class="d-flex flex-wrap gap-1 mb-2"></div>
+            <button type="button" class="btn-outline-custom btn-sm" id="editAddCourseBtn"><i class="bi bi-plus-lg"></i> Adicionar Curso</button>
+          </div>
+        </div>
+        <div class="modal-footer"><button class="btn btn-secondary btn-cancel-modal" data-bs-dismiss="modal">Cancelar</button><button class="btn btn-add" id="confirmEditCoordBtn">Salvar Alterações</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EXCLUIR -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header modal-header-danger">
+          <h5 class="modal-title"><i class="bi bi-exclamation-triangle-fill me-2"></i> Confirmar Exclusão</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body"><p>Excluir o coordenador <strong id="deleteCoordName"></strong>?</p><p class="text-muted small">Esta ação não poderá ser desfeita.</p></div>
+        <div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button><button class="btn btn-danger" id="confirmDeleteBtn">Excluir</button></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../shared/main.js"></script>
+  <script src="coordenadores_admin.js"></script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('../service-worker.js')
+      .then(r => console.log('SW ok:', r.scope))
+      .catch(e => console.error('SW erro:', e));
+  }
+</script>
+</body>
+</html>

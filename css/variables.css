@@ -1,0 +1,124 @@
+/* ============================================================
+   HourSync — Design Tokens / Variáveis CSS
+   Todas as cores, espaçamentos e padrões do sistema.
+   Altere aqui e o efeito se propaga para o projeto inteiro.
+   ============================================================ */
+
+:root {
+
+  /* ── Paleta Principal ── */
+  --color-primary:        #6c83e6;
+  --color-primary-dark:   #5a72d4;
+  --color-primary-light:  #f0f3fe;
+  --color-primary-hover:  #4a63c4;
+  --color-primary-rgb:    108, 131, 230;
+
+  /* ── Paleta de Login / Auth ── */
+  --color-auth-primary:   #6383FA;
+  --color-auth-hover:     #567efa;
+  --color-auth-active:    #257BFF;
+  --color-auth-bg:        #F5F6FA;
+
+  /* ── Cores de Status ── */
+  --color-success:        #2a9d8f;
+  --color-warning:        #f4a261;
+  --color-danger:         #e76f51;
+  --color-danger-deep:    #dc3545;
+  --color-info:           #6c83e6;
+
+  /* ── Status: Badges ── */
+  --badge-success-bg:     #e0f2e9;
+  --badge-success-text:   #1e7b5c;
+  --badge-warning-bg:     #fff0db;
+  --badge-warning-text:   #c46b2e;
+  --badge-danger-bg:      #ffe6e5;
+  --badge-danger-text:    #d9534f;
+  --badge-active-bg:      #e0f2e9;
+  --badge-active-text:    #2a9d8f;
+  --badge-inactive-bg:    #fde2e4;
+  --badge-inactive-text:  #e76f51;
+
+  /* ── Cores de Texto ── */
+  --text-primary:         #1e2a5e;
+  --text-secondary:       #6c757d;
+  --text-muted:           #94a3b8;
+  --text-label:           #3f4e7a;
+  --text-heading:         #1f2b48;
+  --text-dark:            #2c3e66;
+
+  /* ── Cores de Superfície ── */
+  --bg-app:               #f1f1f1;
+  --bg-white:             #ffffff;
+  --bg-surface:           #f8fafd;
+  --bg-surface-alt:       #f4f6fb;
+  --bg-muted:             #e9ecef;
+
+  /* ── Bordas ── */
+  --border-color:         #e2e8f0;
+  --border-color-strong:  #c5cff0;
+  --border-radius-sm:     10px;
+  --border-radius-md:     14px;
+  --border-radius-lg:     20px;
+  --border-radius-xl:     24px;
+  --border-radius-2xl:    28px;
+  --border-radius-pill:   30px;
+  --border-radius-card:   20px;
+  --border-radius-sidebar:25px;
+
+  /* ── Sombras ── */
+  --shadow-sm:            0 2px 8px rgba(0,0,0,0.05);
+  --shadow-md:            0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg:            0 8px 20px rgba(0,0,0,0.12);
+  --shadow-primary:       0 4px 12px rgba(108,131,230,0.4);
+
+  /* ── Sidebar ── */
+  --sidebar-width:        260px;
+  --sidebar-collapsed:    90px;
+  --sidebar-gradient:     linear-gradient(180deg, #6c83e6, #5a78d6);
+  --sidebar-gradient-dark:linear-gradient(180deg, #1e2a45, #162036);
+
+  /* ── Espaçamento ── */
+  --space-xs:     4px;
+  --space-sm:     8px;
+  --space-md:     16px;
+  --space-lg:     24px;
+  --space-xl:     32px;
+
+  /* ── Transições ── */
+  --transition-fast:      0.2s ease;
+  --transition-base:      0.3s ease;
+
+  /* ── Fonte ── */
+  --font-size-xs:         11px;
+  --font-size-sm:         13px;
+  --font-size-base:       14px;
+  --font-size-md:         16px;
+  --font-weight-normal:   400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+}
+
+/* ── Dark Mode — sobrescreve as variáveis ── */
+html.dark-mode,
+html.dark-mode body {
+  --bg-app:               #0f1623;
+  --bg-white:             #1a2235;
+  --bg-surface:           #1e2d42;
+  --bg-surface-alt:       #243047;
+  --bg-muted:             #2d3a52;
+
+  --text-primary:         #e2e8f0;
+  --text-secondary:       #94a3b8;
+  --text-muted:           #64748b;
+  --text-label:           #64748b;
+  --text-heading:         #e2e8f0;
+  --text-dark:            #e2e8f0;
+
+  --border-color:         #2d3a52;
+  --border-color-strong:  #4a5a7a;
+
+  --shadow-sm:            0 2px 8px rgba(0,0,0,0.2);
+  --shadow-md:            0 4px 12px rgba(0,0,0,0.3);
+  --shadow-lg:            0 8px 20px rgba(0,0,0,0.5);
+}

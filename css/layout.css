@@ -1,0 +1,446 @@
+/* ============================================================
+   HourSync — Layout
+   Sidebar, topbar, área de conteúdo e grid do sistema.
+   ============================================================ */
+
+/* ── App Shell — tela interna (pós-login) ── */
+.app-body {
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100%;
+  background: var(--sidebar-gradient);
+  border-radius: var(--border-radius-sidebar);
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-lg);
+  transition: width var(--transition-base);
+  flex-shrink: 0;
+}
+
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed);
+}
+
+/* ── Logo e Toggle ── */
+.sidebar-logo {
+  font-size: 22px;
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.sidebar-toggle {
+  cursor: pointer;
+  font-size: 20px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  color: white;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+/* Elementos que somem quando sidebar colapsada */
+.sidebar.collapsed .sidebar-logo,
+.sidebar.collapsed .logo,
+.sidebar.collapsed .profile h6,
+.sidebar.collapsed .menu span,
+.sidebar.collapsed .logout span {
+  display: none;
+}
+
+.sidebar.collapsed .sidebar-toggle {
+  justify-content: center;
+}
+
+.sidebar.collapsed .menu a,
+.sidebar.collapsed .logout {
+  justify-content: center;
+}
+
+/* ── Perfil na Sidebar ── */
+.sidebar .profile {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.sidebar .profile img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+.sidebar.collapsed .profile img {
+  width: 50px;
+  height: 50px;
+}
+
+.sidebar .profile h6 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: white;
+  margin: 0;
+}
+
+/* ── Menu de Navegação ── */
+.menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  border-radius: 12px;
+  color: rgba(255,255,255,0.9);
+  text-decoration: none;
+  margin-bottom: 6px;
+  transition: background var(--transition-fast);
+  font-weight: var(--font-weight-medium);
+}
+
+.menu a:hover {
+  background: rgba(255,255,255,0.15);
+  color: white;
+}
+
+.menu a.active {
+  background: rgba(0,0,0,0.18);
+  color: white;
+}
+
+.menu a i {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* ── Divisor Sidebar ── */
+.sidebar-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.25);
+  margin: 16px 0;
+}
+
+/* ── Logout ── */
+.logout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  transition: background var(--transition-fast);
+}
+
+.logout:hover {
+  background: rgba(255,255,255,0.15);
+  color: white;
+}
+
+/* ============================================================
+   ÁREA DE CONTEÚDO PRINCIPAL
+   ============================================================ */
+.content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-lg);
+  min-width: 0; /* evita overflow em flex */
+}
+
+.content.scrollable {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+
+.topbar-title {
+  font-size: 20px;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+.topbar-sub {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-normal);
+}
+
+.search-box {
+  background: var(--bg-muted);
+  border: none;
+  border-radius: 15px;
+  padding: 8px 15px;
+  outline: none;
+  width: 260px;
+  color: var(--text-primary);
+  transition: background var(--transition-fast);
+}
+
+.search-box::placeholder {
+  color: var(--text-secondary);
+}
+
+/* ── Cabeçalho de Seção ── */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.section-header h6 {
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* ── Config Grid ── */
+.config-grid {
+  display: flex;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+/* ── Sidebar de Configurações ── */
+.config-sidebar {
+  width: 280px;
+  background: var(--bg-white);
+  border-radius: var(--border-radius-2xl);
+  padding: 20px 12px;
+  box-shadow: var(--shadow-sm);
+  height: fit-content;
+  flex-shrink: 0;
+}
+
+/* ── Área Principal de Configurações ── */
+.config-main {
+  flex: 1;
+  background: var(--bg-white);
+  border-radius: var(--border-radius-2xl);
+  padding: 28px 32px;
+  box-shadow: var(--shadow-sm);
+  min-width: 0;
+}
+
+/* ── Hamburger (mobile) ── */
+.hamburger-btn {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 200;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  width: 42px;
+  height: 42px;
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-primary);
+}
+
+/* ── Overlay (mobile) ── */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 99;
+}
+
+.sidebar-overlay.active {
+  display: block;
+}
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .app-body {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .sidebar {
+    width: 200px;
+  }
+
+  .sidebar.collapsed {
+    width: 70px;
+  }
+
+  .search-box {
+    width: 160px;
+    font-size: var(--font-size-sm);
+  }
+
+  .config-sidebar {
+    width: 220px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .app-body {
+    padding: 0;
+    gap: 0;
+    flex-direction: column;
+    height: auto;
+    overflow: auto;
+  }
+
+  .hamburger-btn {
+    display: flex;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 270px;
+    border-radius: 0 20px 20px 0;
+    z-index: 150;
+    transform: translateX(-100%);
+    transition: transform var(--transition-base);
+    padding-top: 60px;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar .sidebar-toggle {
+    display: none;
+  }
+
+  .content {
+    width: 100%;
+    padding: 20px 16px 30px;
+    padding-top: 72px;
+    overflow: visible;
+  }
+
+  .content.scrollable {
+    overflow-y: visible;
+    overflow-x: hidden;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: var(--space-md);
+  }
+
+  .topbar-title {
+    font-size: 17px;
+  }
+
+  .search-box {
+    width: 100%;
+    font-size: var(--font-size-base);
+    padding: 8px 14px;
+  }
+
+  .config-grid {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .config-sidebar {
+    width: 100%;
+    border-radius: 16px;
+  }
+
+  .config-main {
+    border-radius: 16px;
+    padding: 20px 16px;
+  }
+
+  .modal-dialog {
+    margin: 16px;
+  }
+}
+
+@media (max-width: 400px) {
+  .topbar-title {
+    font-size: 15px;
+  }
+}
+
+/* ── Logo HourSync na sidebar — centralizado ── */
+.sidebar .logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  width: 100%;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Topo da sidebar — toggle + logo empilhados e centralizados */
+.sidebar > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.toggle-btn {
+  cursor: pointer;
+  font-size: 22px;
+  color: white;
+  background: none;
+  border: none;
+  width: 100%;
+  padding: 0 0 6px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.sidebar.collapsed .toggle-btn {
+  justify-content: center;
+}

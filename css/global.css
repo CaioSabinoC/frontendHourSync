@@ -1,0 +1,63 @@
+/* ============================================================
+   HourSync — Estilos Globais
+   Reset, base do body, fontes e scrollbar padrão.
+   ============================================================ */
+
+/* ── Reset Mínimo ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ── HTML e Body ── */
+html {
+  background: var(--bg-app);
+}
+
+body {
+  margin: 0;
+  background: var(--bg-app);
+  color: var(--text-primary);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+/* ── Scrollbar Global ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-muted);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dark);
+}
+
+/* ── Links Globais ── */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ── Imagens ── */
+img {
+  max-width: 100%;
+}
+
+/* ── Formulários — focus padrão ── */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.15);
+  outline: none;
+}

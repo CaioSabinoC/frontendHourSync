@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <script>if(localStorage.getItem("hoursync_darkmode")==="true")document.documentElement.classList.add("dark-mode");</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#ea580c">
+  <link rel="apple-touch-icon" href="../img/icon192.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="icon" href="../img/logo.png">
+  <title>Alunos - HourSync</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/darkmode.css">
+  <style>
+    /* ── badge de curso mini na tabela ── */
+    .badge-curso-mini {
+      display: inline-block;
+      background: #eef0fc;
+      color: #4a5cc7;
+      border: 1px solid #c5cbf0;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      margin-bottom: 3px;
+      white-space: normal;
+    }
+
+    /* ── abas no modal ── */
+    .modal-tabs { border-bottom: 2px solid #e2e6f3; }
+    .modal-tabs .nav-link {
+      color: #6c757d;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      border-radius: 0;
+    }
+    .modal-tabs .nav-link.active {
+      color: #4a5cc7;
+      border-bottom-color: #4a5cc7;
+      background: transparent;
+    }
+
+    /* ── botão adicionar curso no form ── */
+    .btn-add-curso {
+      background: transparent;
+      border: 2px dashed #6c83e6;
+      color: #6c83e6;
+      border-radius: 8px;
+      padding: 6px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+      width: 100%;
+      margin-top: 4px;
+    }
+    .btn-add-curso:hover { background: #eef0fc; }
+
+    /* modal detalhes mais largo */
+    #modalAluno .modal-dialog { max-width: 560px; }
+  </style>
+</head>
+<body class="app-body">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div>
+      <div class="toggle-btn" onclick="toggleSidebar()"><i class="bi bi-list"></i></div>
+      <div class="logo">HourSync</div>
+      <div class="profile"><img src="../img/taylor.jpeg" alt="profile"><h6>Taylor Swift</h6></div>
+      <div class="menu">
+        <a href="../dashboard_admin/dashboard_admin.html"><i class="bi bi-grid"></i><span>Dashboard</span></a>
+        <a href="../gestao_cursos_admin/gestao_cursos_admin.html"><i class="bi bi-book"></i><span>Gestão de Cursos</span></a>
+        <a href="../coordenadores_admin/coordenadores_admin.html"><i class="bi bi-people"></i><span>Coordenadores</span></a>
+        <a href="../certificados_admin/certificados_admin.html"><i class="bi bi-file-earmark-text"></i><span>Certificados</span></a>
+        <a href="../alunos_admin/alunos_admin.html" class="active"><i class="bi bi-person-lines-fill"></i><span>Alunos</span></a>
+        <a href="../configuracoes_admin/configuracoes_admin.html"><i class="bi bi-gear"></i><span>Configurações</span></a>
+      </div>
+    </div>
+    <div><div class="divider"></div><a href="../login/login.html" class="logout"><i class="bi bi-box-arrow-right"></i><span>Sair</span></a></div>
+  </div>
+
+  <!-- CONTEÚDO -->
+  <div class="content">
+    <div class="topbar">
+      <h5><strong>Alunos</strong> <span class="topbar-sub">/ Gerenciamento de horas complementares</span></h5>
+      <div class="d-flex gap-2">
+        <input type="text" class="search-box" id="searchInput" placeholder="Pesquisar aluno ou curso...">
+        <button class="btn-cadastrar" data-bs-toggle="modal" data-bs-target="#modalCadastroAluno">
+          <i class="bi bi-person-plus"></i> Cadastrar aluno
+        </button>
+      </div>
+    </div>
+
+    <!-- CARDS -->
+    <div class="row stats-row g-3">
+      <div class="col-md-3 col-sm-6"><div class="stat-card border-primary-custom"><div class="stat-title">Total de Alunos</div><div class="stat-number" id="totalAlunosCount">0</div></div></div>
+      <div class="col-md-3 col-sm-6"><div class="stat-card border-warning-custom"><div class="stat-title">Em Andamento</div><div class="stat-number" id="emAndamentoCount">0</div></div></div>
+      <div class="col-md-3 col-sm-6"><div class="stat-card border-success-custom"><div class="stat-title">Concluído</div><div class="stat-number" id="concluidoCount">0</div></div></div>
+      <div class="col-md-3 col-sm-6"><div class="stat-card border-info-custom"><div class="stat-title">Média de Horas</div><div class="stat-number">0<span class="stat-unit">h</span></div></div></div>
+    </div>
+
+    <!-- LISTA -->
+    <div class="students-section">
+      <div class="section-header">
+        <h6 class="mb-0"><strong style="color:#6c83e6;">Lista de Alunos</strong></h6>
+        <div class="filter-badge"><i class="bi bi-funnel"></i> Todos os cursos</div>
+      </div>
+      <div class="table-responsive-custom">
+        <table class="table-custom">
+          <thead>
+            <tr><th>Aluno</th><th>Curso(s)</th><th>Horas</th><th>Progresso</th><th>Status</th><th>Detalhes</th></tr>
+          </thead>
+          <tbody id="alunosTableBody"></tbody>
+        </table>
+      </div>
+      <div class="mt-3 text-muted small">Exibindo <span id="exibindoCount">0</span> alunos</div>
+    </div>
+  </div>
+
+  <!-- MODAL CADASTRO -->
+  <div class="modal fade" id="modalCadastroAluno" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header-custom">
+          <h5 class="modal-title"><i class="bi bi-person-badge"></i> Cadastrar Novo Aluno</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body modal-body-padded">
+          <form id="formCadastroAluno">
+            <div class="row g-3">
+              <div class="col-md-12">
+                <label class="form-label-custom">Nome Completo <span class="text-danger">*</span></label>
+                <input type="text" class="form-control form-control-custom" id="cadastroNome" required placeholder="Ex: João Silva da Cunha">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Matrícula <span class="text-danger">*</span></label>
+                <input type="text" class="form-control form-control-custom" id="cadastroMatricula" required placeholder="Número de matrícula">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">E-mail <span class="text-danger">*</span></label>
+                <input type="email" class="form-control form-control-custom" id="cadastroEmail" required placeholder="aluno@faculdade.edu.br">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Senha <span class="text-danger">*</span></label>
+                <div class="password-field">
+                  <input type="password" class="form-control form-control-custom" id="cadastroSenha" required placeholder="Crie uma senha">
+                  <i class="bi bi-eye-slash password-toggle" id="toggleSenhaCadastro"></i>
+                </div>
+                <small class="text-muted">Mínimo 6 caracteres</small>
+              </div>
+
+              <!-- Curso principal -->
+              <div class="col-md-12">
+                <hr class="my-1">
+                <label class="form-label-custom fw-bold" style="color:#4a5cc7;"><i class="bi bi-mortarboard"></i> Curso Principal <span class="text-danger">*</span></label>
+              </div>
+              <div class="col-md-8">
+                <label class="form-label-custom small">Curso</label>
+                <select class="form-select form-select-custom" id="cadastroCurso" required>
+                  <option value="">Selecione o curso</option>
+                  <option>Análise e Desenvolvimento de Sistemas</option>
+                  <option>Administração</option>
+                  <option>Engenharia Civil</option>
+                  <option>Enfermagem</option>
+                  <option>Pedagogia</option>
+                  <option>Gastronomia</option>
+                  <option>Design Gráfico</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label-custom small">Horas Necessárias</label>
+                <input type="number" class="form-control form-control-custom" id="cadastroHorasNecessarias" value="100" step="10" min="20" max="400">
+              </div>
+
+              <!-- Cursos adicionais -->
+              <div class="col-12" id="cursosAdicionaisContainer"></div>
+
+              <div class="col-12">
+                <button type="button" class="btn-add-curso" id="btnAdicionarCurso">
+                  <i class="bi bi-plus-circle"></i> Adicionar outro curso
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer border-0 pt-0 pb-3 px-4">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn-cadastrar" id="btnConfirmarCadastro">Cadastrar Aluno</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DETALHES -->
+  <div class="modal fade" id="modalAluno" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header-custom">
+          <div>
+            <h5 class="modal-title mb-0" id="modalAlunoNome">-</h5>
+            <small style="opacity:.75;" id="modalAlunoMatricula"></small>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body modal-body-padded-sm">
+          <div class="mb-3"><i class="bi bi-envelope" style="color:#6c83e6;"></i> <span id="modalAlunoEmail" class="text-muted small"></span></div>
+          <!-- conteúdo dos cursos injetado pelo JS -->
+          <div id="modalCursosContainer"></div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../shared/config.js"></script>
+  <script src="../shared/main.js"></script>
+  <script src="alunos_admin.js"></script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('../service-worker.js')
+      .then(r => console.log('SW ok:', r.scope))
+      .catch(e => console.error('SW erro:', e));
+  }
+  </script>
+</body>
+</html>

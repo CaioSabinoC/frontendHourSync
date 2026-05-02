@@ -1,4 +1,3 @@
-
 const API_BASE = 'https://backendhoursync-1.onrender.com/api';
 
 async function apiFetch(endpoint) {
@@ -64,7 +63,7 @@ async function carregarDashboard() {
           </div>`).join('')
       : '<p class="text-muted small">Nenhum certificado ainda.</p>';
 
-    // Gráfico por status 
+    // Gráfico por status (doughnut)
     const ctx = document.getElementById('atividadesChart')?.getContext('2d');
     if (ctx) {
       if (grafico) grafico.destroy();

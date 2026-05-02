@@ -55,11 +55,10 @@ async function carregarDashboard() {
     const topCursos = Object.entries(certsPorCurso).sort((a, b) => b[1] - a[1]).slice(0, 4);
     const topEl = document.getElementById('topCursosContent');
     if (topEl) topEl.innerHTML = topCursos.length
-      ? topCursos.map(([nome, qtd], i) => `
-          <div class="top-item">
-            <span class="top-rank">#${i + 1}</span>
-            <span class="top-nome">${nome}</span>
-            <span class="top-qtd">${qtd} cert.</span>
+      ? topCursos.map(([nome, qtd]) => `
+          <div class="curso-item">
+            <span class="curso-nome">${nome}</span>
+            <span class="curso-certificados">${qtd} cert.</span>
           </div>`).join('')
       : '<p class="text-muted small">Nenhum certificado ainda.</p>';
 

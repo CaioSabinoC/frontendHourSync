@@ -25,7 +25,7 @@ let cursosDisponiveis = [];
 let currentSearchTerm = '';
 let cursosAdicionais  = [];
 
-
+/* ─── usuário logado na sidebar ─────────────────── */
 
 function getCursoNome(cursoId) {
   if (!cursoId) return '—';
@@ -46,7 +46,7 @@ function preencherUsuarioSidebar() {
 }
 
 
-
+/* ─── carregar alunos e cursos ──────────────────── */
 async function carregarDados() {
   try {
     const [alunos, cursos] = await Promise.all([
@@ -78,7 +78,7 @@ function preencherSelectCursos() {
   });
 }
 
-
+/* ─── stats ─────────────────────────────────────── */
 function getStatus(aluno) {
   const horasCursadas  = aluno.horasCursadas || 0;
   const horasExigidas  = getCursoHoras(aluno.cursoId);
@@ -100,7 +100,7 @@ function updateStats() {
   if (mediaEl) mediaEl.innerHTML = mediaHoras + '<span class="stat-unit">h</span>';
 }
 
-
+/* ─── tabela ─────────────────────────────────────── */
 function renderTabelaAlunos() {
   const term = currentSearchTerm.toLowerCase().trim();
   const filtered = term
@@ -153,7 +153,7 @@ function renderTabelaAlunos() {
   });
 }
 
-
+/* ─── modal detalhes ────────────────────────────── */
 async function abrirModalAluno(aluno) {
   document.getElementById('modalAlunoNome').innerText      = aluno.nome;
   document.getElementById('modalAlunoMatricula').innerText = aluno.matricula || '—';
@@ -165,7 +165,7 @@ async function abrirModalAluno(aluno) {
   new bootstrap.Modal(document.getElementById('modalAluno')).show();
 
   try {
-    
+    // Buscar certificados aprovados do aluno
     const todos = await apiFetch('/certificados');
     const aprovados = (todos || []).filter(c =>
       (c.alunoId?._id || c.alunoId) === aluno._id && c.status === 'APROVADO'
@@ -211,7 +211,7 @@ async function abrirModalAluno(aluno) {
   }
 }
 
-
+/* ─── cadastrar aluno ───────────────────────────── */
 async function cadastrarAluno() {
   const nome       = document.getElementById('cadastroNome').value.trim();
   const matricula  = document.getElementById('cadastroMatricula').value.trim();
@@ -253,9 +253,7 @@ async function cadastrarAluno() {
 }
 
 
-
-let cursosAdicionais = [];
-
+/* ─── múltiplos cursos no cadastro ──────────────── */
 function renderCursosAdicionais() {
   const container = document.getElementById('cursosAdicionaisContainer');
   if (!container) return;
@@ -279,7 +277,7 @@ function removerCursoAdicional(i) {
   renderCursosAdicionais();
 }
 
-
+/* ─── INIT ──────────────────────────────────────── */
 function init() {
   preencherUsuarioSidebar();
   carregarDados();

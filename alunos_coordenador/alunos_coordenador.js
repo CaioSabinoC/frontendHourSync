@@ -1,8 +1,3 @@
-/* =====================================================
-   HourSync — alunos_admin.js (INTEGRADO AO BACKEND)
-   Backend: https://backendhoursync-1.onrender.com/api
-   ===================================================== */
-
 const API_BASE = 'https://backendhoursync-1.onrender.com/api';
 
 async function apiFetch(endpoint, options = {}) {
@@ -236,10 +231,16 @@ async function cadastrarAluno() {
   try {
     await apiFetch('/usuarios', {
       method: 'POST',
-      body: JSON.stringify({ nome, matricula, email, senha, cursoId, role: 'ALUNO' })
+      body: JSON.stringify({
+        nome, matricula, email, senha,
+        cursoId: [cursoId, ...cursosAdicionais].filter(Boolean),
+        role: 'ALUNO'
+      })
     });
 
     document.getElementById('formCadastroAluno').reset();
+    cursosAdicionais = [];
+    renderCursosAdicionais();
     bootstrap.Modal.getInstance(document.getElementById('modalCadastroAluno')).hide();
     alert(`Aluno ${nome} cadastrado com sucesso!`);
     await carregarDados();
@@ -251,12 +252,44 @@ async function cadastrarAluno() {
   }
 }
 
+
+/* ─── múltiplos cursos no cadastro ──────────────── */
+let cursosAdicionais = [];
+
+function renderCursosAdicionais() {
+  const container = document.getElementById('cursosAdicionaisContainer');
+  if (!container) return;
+  container.innerHTML = cursosAdicionais.map((id, i) => {
+    const curso = cursosDisponiveis.find(c => c._id === id);
+    return `
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <select class="form-select form-select-custom" onchange="cursosAdicionais[${i}]=this.value">
+          <option value="">Selecione um curso</option>
+          ${cursosDisponiveis.map(c => `<option value="${c._id}" ${c._id === id ? 'selected' : ''}>${c.nome}</option>`).join('')}
+        </select>
+        <button type="button" class="btn btn-sm btn-outline-danger" onclick="removerCursoAdicional(${i})">
+          <i class="bi bi-x"></i>
+        </button>
+      </div>`;
+  }).join('');
+}
+
+function removerCursoAdicional(i) {
+  cursosAdicionais.splice(i, 1);
+  renderCursosAdicionais();
+}
+
 /* ─── INIT ──────────────────────────────────────── */
 function init() {
   preencherUsuarioSidebar();
   carregarDados();
 
   document.getElementById('btnConfirmarCadastro').addEventListener('click', cadastrarAluno);
+
+  document.getElementById('btnAdicionarCurso')?.addEventListener('click', () => {
+    cursosAdicionais.push('');
+    renderCursosAdicionais();
+  });
 
   document.getElementById('toggleSenhaCadastro')?.addEventListener('click', function () {
     const input = document.getElementById('cadastroSenha');

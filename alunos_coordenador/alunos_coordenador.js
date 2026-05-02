@@ -254,8 +254,6 @@ async function cadastrarAluno() {
 
 
 /* ─── múltiplos cursos no cadastro ──────────────── */
-let cursosAdicionais = [];
-
 function renderCursosAdicionais() {
   const container = document.getElementById('cursosAdicionaisContainer');
   if (!container) return;

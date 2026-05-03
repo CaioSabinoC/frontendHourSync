@@ -1,7 +1,3 @@
-/* =====================================================
-   HourSync — gestao_cursos_admin.js (INTEGRADO)
-   ===================================================== */
-
 const API_BASE = 'https://backendhoursync-1.onrender.com/api';
 
 let cursosData     = [];
@@ -270,26 +266,64 @@ async function salvarConfigCurso() {
 
 /* ─── deletar atividade ─────────────────────────── */
 async function deletarAtividade(id) {
-  if (!confirm('Remover esta atividade?')) return;
+  if (!confirm('Remover esta atividade deste curso?')) return;
   try {
-    await apiFetch(`/atividades/${id}`, { method: 'DELETE' });
-    atividadesData = atividadesData.filter(a => a._id !== id);
+    const ativ = atividadesData.find(a => a._id === id);
+    if (!ativ) return;
+
+    const cursoIds = Array.isArray(ativ.cursoId)
+      ? ativ.cursoId.map(c => c._id || c).filter(c => c !== currentCursoId)
+      : [];
+
+    if (cursoIds.length === 0) {
+      // Nenhum outro curso usa — pode deletar
+      await apiFetch(`/atividades/${id}`, { method: 'DELETE' });
+      atividadesData = atividadesData.filter(a => a._id !== id);
+    } else {
+      // Outros cursos usam — só remove este curso do array
+      await apiFetch(`/atividades/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          nome: ativ.nome, codigo: ativ.codigo,
+          horasPorSemestre: ativ.horasPorSemestre,
+          categoriaId: ativ.categoriaId?._id || ativ.categoriaId,
+          cursoId: cursoIds
+        })
+      });
+      const idx = atividadesData.findIndex(a => a._id === id);
+      if (idx !== -1) atividadesData[idx].cursoId = cursoIds;
+    }
     renderCategoriasConfig();
   } catch (err) { alert('Erro ao remover: ' + err.message); }
 }
 
 /* ─── deletar categoria ─────────────────────────── */
 async function deletarCategoria(id) {
-  if (!confirm('Remover esta categoria e suas atividades?')) return;
+  if (!confirm('Remover esta categoria deste curso?')) return;
   try {
-    // Deletar atividades da categoria primeiro
-    const ativsDacat = atividadesData.filter(a =>
-      (a.categoriaId?._id || a.categoriaId) === id);
-    await Promise.all(ativsDacat.map(a => apiFetch(`/atividades/${a._id}`, { method: 'DELETE' })));
-    atividadesData = atividadesData.filter(a => (a.categoriaId?._id || a.categoriaId) !== id);
+    const cat = categoriasData.find(c => c._id === id);
+    if (!cat) return;
 
-    await apiFetch(`/categorias/${id}`, { method: 'DELETE' });
-    categoriasData = categoriasData.filter(c => c._id !== id);
+    const cursoIds = (cat.cursoId || [])
+      .map(c => c._id || c)
+      .filter(c => c !== currentCursoId);
+
+    if (cursoIds.length === 0) {
+      // Nenhum outro curso usa — pode deletar categoria e atividades
+      const ativsDaCat = atividadesData.filter(a => (a.categoriaId?._id || a.categoriaId) === id);
+      await Promise.all(ativsDaCat.map(a => apiFetch(`/atividades/${a._id}`, { method: 'DELETE' })));
+      atividadesData = atividadesData.filter(a => (a.categoriaId?._id || a.categoriaId) !== id);
+      await apiFetch(`/categorias/${id}`, { method: 'DELETE' });
+      categoriasData = categoriasData.filter(c => c._id !== id);
+    } else {
+      // Outros cursos usam — só remove este curso do array
+      await apiFetch(`/categorias/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ nome: cat.nome, cursoId: cursoIds })
+      });
+      const idx = categoriasData.findIndex(c => c._id === id);
+      if (idx !== -1) categoriasData[idx].cursoId = cursoIds;
+    }
     renderCategoriasConfig();
     renderTabela();
   } catch (err) { alert('Erro ao remover: ' + err.message); }

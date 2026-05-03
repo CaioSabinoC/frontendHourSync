@@ -112,12 +112,23 @@ function updateStats() {
 /* ─── tabela ─────────────────────────────────────── */
 function renderTabelaAlunos() {
   const term = currentSearchTerm.toLowerCase().trim();
-  const filtered = term
-    ? alunosData.filter(a =>
-        a.nome?.toLowerCase().includes(term) ||
-        a.matricula?.includes(term) ||
-        getCursoNome(a.cursoId).toLowerCase().includes(term))
-    : [...alunosData];
+  let filtered = [...alunosData];
+
+  if (term) {
+    filtered = filtered.filter(a =>
+      a.nome?.toLowerCase().includes(term) ||
+      a.matricula?.includes(term) ||
+      getCursoNome(a.cursoId).toLowerCase().includes(term));
+  }
+
+  if (currentCursoFilterAlunos) {
+    filtered = filtered.filter(a => {
+      const ids = Array.isArray(a.cursoId)
+        ? a.cursoId.map(c => c._id || c)
+        : [a.cursoId?._id || a.cursoId];
+      return ids.includes(currentCursoFilterAlunos);
+    });
+  }
 
   const tbody = document.getElementById('alunosTableBody');
   tbody.innerHTML = '';

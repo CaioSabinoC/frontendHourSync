@@ -1,4 +1,4 @@
-# 🎓 HourSync — Frontend
+# HourSync — Frontend
 
 > Sistema de Gestão de Atividades Complementares da Faculdade Senac Pernambuco
 
@@ -10,7 +10,7 @@
 
 ---
 
-## 📋 Sobre o Projeto
+## Sobre o Projeto
 
 O **HourSync** é uma plataforma web desenvolvida como Projeto Integrador do curso de Análise e Desenvolvimento de Sistemas (3° período) da Faculdade Senac Pernambuco. O frontend é uma **PWA (Progressive Web App)** construída com HTML, CSS e JavaScript puro, integrada ao backend via API REST.
 
@@ -21,17 +21,17 @@ O **HourSync** é uma plataforma web desenvolvida como Projeto Integrador do cur
 
 ---
 
-## 🌐 URL do Backend (API)
+## URL do Backend (API)
 
 ```
 https://backendhoursync-1.onrender.com/api
 ```
 
-> ⚠️ O plano gratuito do Render hiberna após inatividade. A primeira requisição pode demorar até 50 segundos.
+> O plano gratuito do Render hiberna após inatividade. A primeira requisição pode demorar até 50 segundos.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 | Tecnologia | Função |
 |---|---|
@@ -46,7 +46,7 @@ https://backendhoursync-1.onrender.com/api
 
 ---
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 frontendHourSync/
@@ -122,7 +122,7 @@ frontendHourSync/
 
 ---
 
-## 🔐 Autenticação e Perfis
+## Autenticação e Perfis
 
 O sistema possui três perfis de acesso, cada um com suas próprias telas:
 
@@ -142,7 +142,7 @@ O sistema possui três perfis de acesso, cada um com suas próprias telas:
 
 ---
 
-## 🔌 Integração com o Backend (api.js)
+## Integração com o Backend (api.js)
 
 Toda comunicação com o backend passa pelo arquivo `shared/api.js`. Ele centraliza todos os `fetch` e gerencia automaticamente:
 
@@ -211,7 +211,7 @@ setLoading(btnEl, loading)  // Spinner em botões durante chamadas async
 
 ---
 
-## ⚙️ Como Trocar a URL do Backend
+## Como Trocar a URL do Backend
 
 Abra o arquivo `shared/config.js` e altere apenas essa linha:
 
@@ -227,7 +227,7 @@ window.HOURSYNC_API = "https://backendhoursync-1.onrender.com/api";
 
 ---
 
-## 📱 PWA — Progressive Web App
+## PWA — Progressive Web App
 
 O HourSync é uma PWA, o que significa que pode ser instalado como um aplicativo nativo no celular ou computador.
 
@@ -258,7 +258,7 @@ O `service-worker.js` implementa a estratégia **Cache First** para os assets es
 
 ---
 
-## 🎨 Sistema de Estilos
+## Sistema de Estilos
 
 O CSS está organizado em camadas de responsabilidade:
 
@@ -274,7 +274,7 @@ O CSS está organizado em camadas de responsabilidade:
 
 ---
 
-## 🚀 Como Visualizar o Projeto
+## Como Visualizar o Projeto
 
 O frontend é HTML puro — não precisa instalar Node.js nem nenhuma dependência. Mas **não pode ser aberto clicando direto no arquivo**, pois o `fetch` não funciona com o protocolo `file://`.
 
@@ -292,7 +292,7 @@ Acessa em `http://localhost:3000`
 
 ---
 
-## 📦 Como Fazer o Deploy no GitHub Pages
+## Como Fazer o Deploy no GitHub Pages
 
 1. Suba o código no GitHub:
 ```bash
@@ -312,11 +312,11 @@ git push -u origin main
 https://SEU_USUARIO.github.io/frontendHourSync
 ```
 
-> ⚠️ Após o deploy no GitHub Pages, certifique-se de que o `shared/config.js` está apontando para a URL de produção do backend.
+> Após o deploy no GitHub Pages, certifique-se de que o `shared/config.js` está apontando para a URL de produção do backend.
 
 ---
 
-## 👥 Equipe
+## Equipe
 
 | Nome |
 |---|
@@ -333,6 +333,6 @@ https://SEU_USUARIO.github.io/frontendHourSync
 
 ---
 
-## 📄 Licença
+## Licença
 
 Este projeto foi desenvolvido para fins acadêmicos como Projeto Integrador da Faculdade Senac Pernambuco.

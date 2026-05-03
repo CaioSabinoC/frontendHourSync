@@ -1,8 +1,3 @@
-/* =====================================================
-   HourSync — configuracoes.js
-   Usado por: configuracoes_admin.html, configuracoes_coordenador.html
-   ===================================================== */
-
 // Dados do perfil — cada página define userProfile antes de incluir este script
 // via um bloco <script> inline antes da tag <script src="js/configuracoes.js">
 

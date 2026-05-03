@@ -233,7 +233,7 @@ async function cadastrarAluno() {
       method: 'POST',
       body: JSON.stringify({
         nome, matricula, email, senha,
-        cursoId: [cursoId, ...cursosAdicionais].filter(Boolean),
+        cursoId: [cursoId, ...cursosAdicionais.map(c => c.cursoId)].filter(Boolean),
         role: 'ALUNO'
       })
     });
@@ -257,19 +257,39 @@ async function cadastrarAluno() {
 function renderCursosAdicionais() {
   const container = document.getElementById('cursosAdicionaisContainer');
   if (!container) return;
-  container.innerHTML = cursosAdicionais.map((id, i) => {
-    const curso = cursosDisponiveis.find(c => c._id === id);
+  container.innerHTML = cursosAdicionais.map((item, i) => {
+    const id = item.cursoId || '';
+    const horas = item.horas || 100;
     return `
-      <div class="d-flex align-items-center gap-2 mb-2">
-        <select class="form-select form-select-custom" onchange="cursosAdicionais[${i}]=this.value">
-          <option value="">Selecione um curso</option>
-          ${cursosDisponiveis.map(c => `<option value="${c._id}" ${c._id === id ? 'selected' : ''}>${c.nome}</option>`).join('')}
-        </select>
-        <button type="button" class="btn btn-sm btn-outline-danger" onclick="removerCursoAdicional(${i})">
-          <i class="bi bi-x"></i>
-        </button>
+      <div class="row g-2 mb-2 align-items-end">
+        <div class="col-7">
+          <label class="form-label-custom small">Curso</label>
+          <select class="form-select form-select-custom" onchange="cursosAdicionais[${i}].cursoId=this.value; atualizarHorasCursoAdicional(${i}, this.value)">
+            <option value="">Selecione um curso</option>
+            ${cursosDisponiveis.map(c => `<option value="${c._id}" ${c._id === id ? 'selected' : ''}>${c.nome}</option>`).join('')}
+          </select>
+        </div>
+        <div class="col-3">
+          <label class="form-label-custom small">Horas</label>
+          <input type="number" class="form-control form-control-custom" value="${horas}" min="20" step="10"
+            onchange="cursosAdicionais[${i}].horas=parseInt(this.value)">
+        </div>
+        <div class="col-2">
+          <button type="button" class="btn btn-sm btn-outline-danger w-100" onclick="removerCursoAdicional(${i})">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
       </div>`;
   }).join('');
+}
+
+
+function atualizarHorasCursoAdicional(i, cursoId) {
+  const curso = cursosDisponiveis.find(c => c._id === cursoId);
+  if (curso) {
+    cursosAdicionais[i].horas = curso.horasExigidas || 100;
+    renderCursosAdicionais();
+  }
 }
 
 function removerCursoAdicional(i) {
@@ -284,8 +304,16 @@ function init() {
 
   document.getElementById('btnConfirmarCadastro').addEventListener('click', cadastrarAluno);
 
+
+  // Preencher horas automaticamente ao selecionar curso
+  document.getElementById('cadastroCurso')?.addEventListener('change', function() {
+    const curso = cursosDisponiveis.find(c => c._id === this.value);
+    const horasEl = document.getElementById('cadastroHorasNecessarias');
+    if (horasEl && curso) horasEl.value = curso.horasExigidas || 100;
+  });
+
   document.getElementById('btnAdicionarCurso')?.addEventListener('click', () => {
-    cursosAdicionais.push('');
+    cursosAdicionais.push({ cursoId: '', horas: 100 });
     renderCursosAdicionais();
   });
 

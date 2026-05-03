@@ -1,8 +1,3 @@
-/* =====================================================
-   HourSync — certificados.js (ADMIN)
-   Backend: https://backendhoursync-1.onrender.com/api
-   ===================================================== */
-
 const API_BASE = 'https://backendhoursync-1.onrender.com/api';
 
 async function apiFetch(endpoint, options = {}) {

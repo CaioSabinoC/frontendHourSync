@@ -9,7 +9,7 @@
   function showMessage(message, isError = false) {
     const toastBody = document.getElementById('toastMessage');
     if (toastBody) {
-      toastBody.innerHTML = isError ? `⚠️ ${message}` : `✅ ${message}`;
+      toastBody.innerHTML = isError ? ` ${message}` : ` ${message}`;
       if (toastEl) {
         toastEl.classList.toggle('bg-danger', isError);
         toastEl.classList.toggle('bg-dark', !isError);

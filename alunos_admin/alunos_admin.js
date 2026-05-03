@@ -24,6 +24,7 @@ let alunosData        = [];
 let cursosDisponiveis = [];
 let currentSearchTerm = '';
 let cursosAdicionais  = [];
+let currentCursoFilterAlunos = '';
 
 /* ─── usuário logado na sidebar ─────────────────── */
 
@@ -60,6 +61,14 @@ async function carregarDados() {
     preencherSelectCursos();
     updateStats();
     renderTabelaAlunos();
+
+    // Popular filtro de cursos
+    const sel = document.getElementById('cursoFilterAlunos');
+    if (sel) {
+      cursosDisponiveis.forEach(c => {
+        sel.innerHTML += `<option value="${c._id}">${c.nome}</option>`;
+      });
+    }
   } catch (err) {
     console.error('Erro ao carregar dados:', err);
     const tbody = document.getElementById('alunosTableBody');
@@ -327,6 +336,11 @@ function init() {
 
   document.getElementById('searchInput').addEventListener('input', e => {
     currentSearchTerm = e.target.value;
+    renderTabelaAlunos();
+  });
+
+  document.getElementById('cursoFilterAlunos')?.addEventListener('change', e => {
+    currentCursoFilterAlunos = e.target.value;
     renderTabelaAlunos();
   });
 }

@@ -30,25 +30,36 @@ async function carregarDashboard() {
     document.getElementById('horasValidadasCount').innerHTML = `${horasValidadas}<span class="stat-unit">h</span>`;
 
     // Gráfico
-    const ctx = document.getElementById('atividadesChart')?.getContext('2d');
+    const ctx = document.getElementById('certChart')?.getContext('2d');
     if (ctx) {
       if (grafico) grafico.destroy();
+
+      // Agrupar por mês
+      const meses = {};
+      certificados.forEach(c => {
+        if (!c.criadoEm) return;
+        const mes = new Date(c.criadoEm).toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' });
+        meses[mes] = (meses[mes] || 0) + 1;
+      });
+      const labels = Object.keys(meses).slice(-6);
+      const valores = labels.map(m => meses[m]);
+
       grafico = new Chart(ctx, {
-        type: 'doughnut',
+        type: 'bar',
         data: {
-          labels: ['Pendentes', 'Aprovados', 'Rejeitados'],
+          labels,
           datasets: [{
-            data: [pendentes.length, aprovados.length, rejeitados.length],
-            backgroundColor: ['#f59e0b', '#22c55e', '#ef4444'],
-            borderWidth: 2,
-            borderColor: '#fff'
+            label: 'Certificados enviados',
+            data: valores,
+            backgroundColor: '#6c83e6',
+            borderRadius: 6,
           }]
         },
         options: {
           responsive: true,
-          plugins: {
-            legend: { position: 'bottom' }
-          }
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
         }
       });
     }
@@ -77,6 +88,26 @@ async function carregarDashboard() {
               </tr>`;
           }).join('');
       }
+    }
+
+    // Atividades Recentes
+    const activityList = document.getElementById('activityList');
+    if (activityList) {
+      const recentes = [...certificados]
+        .sort((a, b) => new Date(b.criadoEm) - new Date(a.criadoEm))
+        .slice(0, 6);
+
+      const itens = recentes.map(c => {
+        const status = c.status === 'APROVADO' ? 'aprovado' : c.status === 'REJEITADO' ? 'rejeitado' : 'pendente';
+        const cor = status === 'aprovado' ? '#22c55e' : status === 'rejeitado' ? '#ef4444' : '#f59e0b';
+        const data = c.criadoEm ? new Date(c.criadoEm).toLocaleDateString('pt-BR') : '—';
+        return `<div class="activity-item" style="border-left:3px solid ${cor};padding:6px 10px;margin-bottom:8px;border-radius:4px;background:#f8f9ff;">
+          <div style="font-size:.82rem;font-weight:600;">${c.alunoId?.nome || '—'}</div>
+          <div style="font-size:.75rem;color:#6c757d;">${c.categoriaId?.nome || '—'} — ${data}</div>
+        </div>`;
+      }).join('');
+
+      activityList.innerHTML = `<h6><strong><i class="bi bi-clock-history"></i> Atividades Recentes</strong></h6>${itens || '<p class="text-muted small">Nenhuma atividade.</p>'}`;
     }
 
   } catch (err) {

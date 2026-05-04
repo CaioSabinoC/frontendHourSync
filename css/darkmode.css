@@ -1,13 +1,3 @@
-/* ============================================================
-   HourSync — Modo Escuro
-   Aplica o tema escuro usando as variáveis de darkmode.css
-   já definidas em variables.css (:root quando html.dark-mode).
-
-   IMPORTANTE: A maioria dos componentes já responde
-   automaticamente às variáveis CSS. Este arquivo cobre
-   apenas os casos que precisam de ajuste específico.
-   ============================================================ */
-
 /* ── Superfícies que usam background direto ── */
 html.dark-mode .stat-card,
 html.dark-mode .table-card,

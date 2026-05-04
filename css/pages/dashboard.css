@@ -1,8 +1,3 @@
-/* ============================================================
-   HourSync — Página: Dashboard (Admin e Coordenador)
-   Estilos específicos das telas de dashboard.
-   ============================================================ */
-
 /* ── Canvas de gráficos ── */
 canvas {
   max-height: 300px;
@@ -16,9 +11,6 @@ canvas {
   max-height: 280px;
 }
 
-/* ── Correção do layout do dashboard coordenador ──
-   O content usa scrollable, então os cards de gráfico
-   e atividades não precisam de altura fixa travada.     */
 .card-custom {
   min-height: 340px;
 }
@@ -28,7 +20,7 @@ canvas {
   max-height: 420px;
 }
 
-/* ── Tabela de pendentes no dashboard — scroll interno ── */
+/* ── Tabela de pendentes no dashboard ── */
 .table-card .table-responsive-custom {
   max-height: 280px;
   overflow-y: auto;

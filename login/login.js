@@ -1,7 +1,3 @@
-/* =====================================================
-   HourSync — login.js (INTEGRADO AO BACKEND)
-   ===================================================== */
-
 document.addEventListener('DOMContentLoaded', function () {
   const loginForm     = document.getElementById('loginForm');
   const loginEmail    = document.getElementById('loginEmail');
@@ -82,4 +78,17 @@ document.addEventListener('DOMContentLoaded', function () {
       setLoading(false);
     }
   });
+});
+
+// Toggle senha
+document.getElementById('toggleSenhaLogin')?.addEventListener('click', function() {
+  const input = document.getElementById('loginPassword');
+  const icon  = document.getElementById('iconSenhaLogin');
+  if (!input) return;
+  const isPassword = input.type === 'password';
+  input.type = isPassword ? 'text' : 'password';
+  if (icon) {
+    icon.classList.toggle('fa-eye', !isPassword);
+    icon.classList.toggle('fa-eye-slash', isPassword);
+  }
 });

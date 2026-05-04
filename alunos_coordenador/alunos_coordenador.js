@@ -26,6 +26,22 @@ let currentSearchTerm = '';
 let cursosAdicionais  = [];
 let currentCursoFilterAlunos = '';
 
+ // Popular filtro de cursos
+    const sel = document.getElementById('cursoFilterAlunos');
+    if (sel) {
+      cursosDisponiveis.forEach(c => {
+        sel.innerHTML += `<option value="${c._id}">${c.nome}</option>`;
+      });
+    }
+  } catch (err) {
+    console.error('Erro ao carregar dados:', err);
+    const tbody = document.getElementById('alunosTableBody');
+    if (tbody) tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-danger">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>Não foi possível carregar os alunos.
+    </td></tr>`;
+  }
+}
+
 /* ─── usuário logado na sidebar ─────────────────── */
 
 function getCursoNome(cursoId) {

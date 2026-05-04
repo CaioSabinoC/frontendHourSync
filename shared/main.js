@@ -1,8 +1,3 @@
-/* =====================================================
-   HourSync — JS Compartilhado (main.js)
-   Funções usadas em todas as telas
-   ===================================================== */
-
 function toggleSidebar() {
   if (window.innerWidth <= 767) {
     const sidebar = document.getElementById('sidebar');

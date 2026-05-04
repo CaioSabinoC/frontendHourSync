@@ -1,7 +1,3 @@
-/* =====================================================
-   HourSync — coordenadores_admin.js (INTEGRADO)
-   ===================================================== */
-
 const API_BASE = 'https://backendhoursync-1.onrender.com/api';
 
 let coordenadoresData = [];

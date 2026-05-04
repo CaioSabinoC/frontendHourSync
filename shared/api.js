@@ -1,9 +1,3 @@
-/* =====================================================
-   HourSync — api.js
-   Camada de integração com o backend Spring Boot
-   URL base: https://hoursync-backend.onrender.com
-   ===================================================== */
-
 const API_BASE = window.HOURSYNC_API || "https://backendhoursync-1.onrender.com/api";
 
 /* =====================================================
